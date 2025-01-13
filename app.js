@@ -1,9 +1,9 @@
 
-fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=a`)
+fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?f=a`)
     .then(res => res.json())
     .then(data => {
         clearCard();
-        displayProd(data.meals);
+        displayProd(data.drinks);
     })
     .catch((err) => {
         console.log(err);
@@ -11,13 +11,12 @@ fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=a`)
 
 document.getElementById("search").addEventListener("click", (event) => {
     const inputVal = document.getElementById("inputVal").value;
-    console.log(inputVal);
 
-    fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${inputVal}`)
+    fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${inputVal}`)
     .then(res => res.json())
     .then(data => {
         clearCard();
-        displayProd(data.meals);
+        displayProd(data.drinks);
     })
     .catch((err) => {
         console.log(err);
@@ -50,19 +49,19 @@ const displayProd = (prods) => {
         div.innerHTML =
             `
             <div class="card" style="width: 260px;">
-                <img src="${prod.strMealThumb}" class="card-img-top w-64 h-52 " alt="...">
+                <img src="${prod.strDrinkThumb}" class="card-img-top w-64 h-52 " alt="...">
                 <div class="card-body text-center">
-                    <h5 class="text-lg font-medium">Name: ${prod.strMeal}</h5>
+                    <h5 class="text-lg font-medium">Name: ${prod.strDrink}</h5>
                     <p class="card-text">Category: ${prod.strCategory}</p>
                     <p class="card-text my-2">Instructions: ${prod.strInstructions.slice(0, 15)}</p>
                     <!-- Button trigger modal -->
-                    <button onclick="singleProd(${prod.idMeal})" class="btn btn-primary" >
+                    <button onclick="singleProd(${prod.idDrink})" class="btn btn-primary" >
                     Details
                     </button>
 
 
                     
-                    <button onclick="handleAddToCart('${prod.strMeal}')" class="btn btn-primary">Add To Cart</button>
+                    <button onclick="handleAddToCart('${prod.strDrink}')" class="btn btn-primary">Add To Cart</button>
                 </div>
             </div>
                     `
@@ -71,20 +70,22 @@ const displayProd = (prods) => {
     });
 }
 const singleProd = (id) => {
-    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+    fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`)
     .then((res) => res.json())
-    .then((json) => set(json.meals[0]))
+    .then((json) => set(json.drinks[0]))
+    console.log(id);
+    
     
     function set(prod) {
         const title = document.getElementById("mod-title");
         const body = document.getElementById("mod-body");
         console.log(prod);
         
-        title.innerText = prod.strMeal;
+        title.innerText = prod.strDrink;
         body.innerHTML = `
-        <img src="${prod.strMealThumb}" class="card-img-top m-auto w-64 h-52" alt="${prod.strMeal}">
+        <img src="${prod.strDrinkThumb}" class="card-img-top m-auto w-64 h-52" alt="${prod.strDrink}">
         <p class="text-xl my-3 font-bold">Category: ${prod.strCategory}</p>
-        <p class="text-xl my-3">Area: ${prod.strArea}</p>
+        <p class="text-xl my-3">Alcoholic: ${prod.strAlcoholic}</p>
         <p class="text-justify">Instructions: ${prod.strInstructions}</p>
         `;
     }
